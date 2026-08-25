@@ -1,5 +1,5 @@
 from turtle import Turtle, Screen
-import random
+import random_walk
 
 tim = Turtle()
 
@@ -13,7 +13,7 @@ def draw_polygon(number_of_sides):
         tim.right(angle)
 
 for i in range (3, 11):
-    tim.pencolor(random.choice(colors))
+    tim.pencolor(random_walk.choice(colors))
     draw_polygon(i)
 
 
