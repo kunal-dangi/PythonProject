@@ -9,7 +9,20 @@ class ScoreBoard(Turtle):
         self.penup()
         self.hideturtle()
         self.color("white")
+
+    def update(self):
+        self.clear()
         self.goto( -100, 210)
         self.write(f"SCORE: {self.score1}", align="center", font=("Courier", 24, "normal"))
         self.goto(100, 210)
         self.write(f"SCORE: {self.score2}", align="center", font=("Courier", 24, "normal"))
+
+
+
+    def point_1(self):
+        self.score1 += 1
+        self.update()
+
+    def point_2(self):
+        self.score2 += 1
+        self.update()

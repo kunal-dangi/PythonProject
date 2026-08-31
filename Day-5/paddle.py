@@ -10,10 +10,12 @@ class Paddle(Turtle):
         self.goto(x, y)
 
     def go_up(self):
+        self.speed("fastest")
         new_y = self.ycor() + 20
         self.goto(self.xcor(), new_y)
 
     def go_down(self):
+        self.speed("fastest")
         new_y = self.ycor() - 20
         self.goto(self.xcor(), new_y)
 

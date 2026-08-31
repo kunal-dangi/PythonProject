@@ -25,7 +25,7 @@ game_on = True
 while game_on:
     screen.update()
     ball.move()
-    time.sleep(0.1)
+    time.sleep(ball.move_speed)
     if ball.ycor() > 290 or ball.ycor() < -290:
         ball.bounce_y()
 
@@ -34,10 +34,12 @@ while game_on:
 
     if ball.xcor() > 370:
         ball.reset_position ()
+        scoreboard.point_1()
 
 
     if ball.xcor() < -370:
         ball.reset_position()
+        scoreboard.point_2()
 
 
 screen.exitonclick()
