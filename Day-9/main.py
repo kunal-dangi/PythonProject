@@ -19,59 +19,59 @@
 # # for getting each data entry in a list itself not as an element of big list
 #
 #
-# import pandas
-# import pandas as pd
+import pandas
+import pandas as pd
 #
-# data = pandas.read_csv("225 weather-data.csv")
-# print(data)
-# print(data["temp"])
+data = pandas.read_csv("225 weather-data.csv")
+print(data)
+print(data["temp"])
 #
-# data_dict = data.to_dict()
-# #print(data_dict)
+data_dict = data.to_dict()
+print(data_dict)
 # # converts data to a dictionary
 #
-# # temp_list = data["temp"].to_list()
-# #  creates a list of only temperature values
-# # summation = 0
-# # for i in range(len(temp_list)):
-# #     x = temp_list[i]
-# #     summation += x
+temp_list = data["temp"].to_list()
+# creates a list of only temperature values
+summation = 0
+for i in range(len(temp_list)):
+    x = temp_list[i]
+    summation += x
 # #
-# # print(summation/len(temp_list))
+print(summation/len(temp_list))
 #
 # ## ye hai aam zindagi!!
 # #
-# # print(data["temp"].mean())
+print(data["temp"].mean())
 # # ## ye hai PANDAS Zindagi!!! Lazy as shit
 # #
-# # print(data["temp"].max())  # to get maximum value, come on you are not that dumb are you??
+print(data["temp"].max())  # to get maximum value, come on you are not that dumb are you??
 #
 #
 #
 # # to get a row instead of a coloumn...
 #
-# print(data[data.day == "Monday"])
+print(data[data.day == "Monday"])
 #
-# # in data.day python is handling the data as an object and in data["temp"] it is behaving as a dictionary
-#
-#
-# print(data[data.temp == data.temp.max()])
+# in data.day python is handling the data as an object and in data["temp"] it is behaving as a dictionary
 #
 #
-# monday = data[data.day == "Monday"]
-# #how to get specific data in a more clear, standard way>>
-# print(monday.temp)
+print(data[data.temp == data.temp.max()])
 #
+#
+monday = data[data.day == "Monday"]
+#how to get specific data in a more clear, standard way>>
+print(monday.temp)
+
 # # to create a data_frame from scratch
+
+data_frame = {
+    "students" : ["Deepak", "Mohit", "Tanuj"],
+     "score" : [19, 20, 15]
+}
 #
-# data_frame = {
-#     "students" : ["Deepak", "Mohit", "Tanuj"],
-#     "score" : [19, 20, 15]
-# }
-#
-# Data = pd.DataFrame(data_frame)
-#
-# Data.to_csv("new_data.csv")
+Data = pd.DataFrame(data_frame)
+
+Data.to_csv("new_data.csv")
 
 
 
