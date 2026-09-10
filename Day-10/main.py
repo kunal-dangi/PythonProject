@@ -45,7 +45,7 @@ print(common)
 # syntax
 import random
 
-students = ["Alex", "Steve", "Gork","Ladiaz", "Stu"]
+students = ["Alex", "Steve", "Gork","Ladiz", "Stu"]
 
 scores= {item:random.randint(1, 100) for item in students }
 # assigning random score to items of list students and finally it will return in a dictionary as we have item already
