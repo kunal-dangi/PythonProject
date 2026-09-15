@@ -8,31 +8,60 @@ RED = "#e7305b"
 GREEN = "#9bdeac"
 YELLOW = "#f7f5dd"
 FONT_NAME = "Courier"
-WORK_MIN = 25
-SHORT_BREAK_MIN = 5
-LONG_BREAK_MIN = 20
+WORK_MIN = 1
+SHORT_BREAK_MIN = 2
+LONG_BREAK_MIN = 3
 reps = 0
+cycle = 0
+timer = None
 
-# ---------------------------- TIMER RESET ------------------------------- # 
+# TIMER RESET
+
+def Reset():
+    global reps
+    global cycle
+    ticks.config(text = "_", bg=YELLOW, fg=GREEN, font = (FONT_NAME, 15, "italic"))
+    heading.config(text="Timer", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 40, "italic"))
+    canvas.itemconfig(text_timer, text="00:00")
+    cycle = 0
+    reps = 0
+    window.after_cancel(timer)
+
+
+
+def Tick_counter():
+    global reps
+    global cycle
+    global text_timer
+    global heading
+    if reps % 8 == 0:
+        cycle += 1
+        NoOfTics = "✓" * cycle
+        ticks.config(text = f"{NoOfTics}", bg=YELLOW, fg=GREEN, font = (FONT_NAME, 15, "italic"))
+
 
 # TIMER MECHANISM
 
 def Timer():
     global reps
     WORK_SECS = WORK_MIN * 60
-    SHORT_BREAK = SHORT_BREAK_MIN
-    LONG_BREAK = LONG_BREAK_MIN
+    SHORT_BREAK = SHORT_BREAK_MIN * 60
+    LONG_BREAK = LONG_BREAK_MIN * 60
     reps += 1
     if reps % 8 == 0:
+        heading.config(text = "Long-Break", font = (FONT_NAME, 25, "italic"))
         count_down(LONG_BREAK)
     elif reps % 2 == 0:
+        heading.config(text="Short-Break", font=(FONT_NAME, 25, "italic"))
         count_down(SHORT_BREAK)
     else:
+        heading.config(text="Work", font=(FONT_NAME, 25, "italic"))
         count_down(WORK_SECS)
 
 # COUNTDOWN MECHANISM
 
 def count_down(count):
+    global timer
     count_min = math.floor(count / 60)
     count_sec = count % 60
     if count >=  0 and count_sec <10:
@@ -40,9 +69,10 @@ def count_down(count):
 
     canvas.itemconfig(text_timer, text=f"{count_min}:{count_sec}" )
     if count > 0:
-        window.after(1000, count_down, count-1)
+        timer = window.after(1000, count_down, count-60)
     else:
         Timer()
+        Tick_counter()
 
 # UI SETUP
 
@@ -74,11 +104,12 @@ button2 = Button(
     activebackground=YELLOW,
     highlightbackground=YELLOW,
     bd=0,
-    relief="flat"
+    relief="flat",
+    command=Reset
 )
 button2.grid(column=3, row=2)
 
-ticks = Label(text = "✓", bg=YELLOW, fg=GREEN, font = (FONT_NAME, 15, "italic"))
+ticks = Label(text = "_", bg=YELLOW, fg=GREEN, font = (FONT_NAME, 15, "italic"))
 ticks.grid(column = 1, row = 3)
 
 canvas = Canvas(width = 250, height = 244, bg = YELLOW, highlightthickness=0)
