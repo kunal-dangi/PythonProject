@@ -4,12 +4,18 @@ from tkinter import *
 from tkinter import messagebox as mbox, messagebox
 import random
 import pyperclip
+import json
+from json import JSONDecodeError
 
 
 def save_password():
     web = input1.get()
     email = input2.get()
     passwordEntry = input3.get()
+    new_data = {web:{
+        "email": email,
+        "password": passwordEntry
+    }}
 
     if len(web) == 0 or len(email) == 0 or len(passwordEntry) == 0:
         messagebox.showerror("Error", "Please enter all required information")
@@ -18,15 +24,26 @@ def save_password():
                                                 f"\nPassword: {passwordEntry} \nIs it ok to save?")
 
         if is_ok:
-            with open("data.txt", "a") as f:
-                f.write(web + "  |  " + email + "  |  " + passwordEntry + "\n")
-                input1.delete(0, END)
-                input3.delete(0, END)
+            data = {}
+            try:
+                with open("data.json", "r") as f:
+                    data = json.load(f)                 # to read data from a json file!!
+                data.update(new_data)               # to update the already present data
+            except FileNotFoundError:
+                data = new_data
+            except JSONDecodeError:
+                data = new_data
+            with open("data.json", "w") as f:
+                json.dump(data, f, indent=4)        # to write the updated data in json {indent = 4, for  better looks}
+            input1.delete(0, END)
+            input3.delete(0, END)
 
 # Random Password Generator ->
 
 def Generate_password():
-    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+               'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
+               'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
     numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
 
@@ -47,6 +64,30 @@ def Generate_password():
 
     input3.insert(0, password)
     pyperclip.copy(password)
+
+
+
+def Search():
+    web = input1.get()
+    try:
+        with open("data.json", "r") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        messagebox.showerror("Error", "No data file found")
+    except JSONDecodeError:
+        messagebox.showerror("Error", "data.json is empty or invalid")
+    else:
+        if web in data:
+            entry = data[web]
+            messagebox.showinfo(
+                title=web,
+                message=f"Email: {entry['email']}\nPassword: {entry['password']}"
+            )
+        else:
+            messagebox.showerror("Error", f"No details found for {web}")
+
+
+
 
 
 # UI SETUP
@@ -86,5 +127,8 @@ button.grid(column = 2, row=3, sticky = "w")
 
 button2 = Button(window, text = "Add", fg="black", font=("Arial", 25), width=40, command=save_password)
 button2.grid(column = 1, row = 4, columnspan=2)
+
+button3 = Button(window, text = "Search", fg="black", font=("Arial", 25), width=10, command=Search)
+button3.grid(column = 2, row = 1, columnspan=1)
 
 window.mainloop()
