@@ -31,16 +31,36 @@ stock_params = {
     "apikey": "0QM1ERFR91XKBBQS"
 }
 
-response = requests.get("https://www.alphavantage.co/query", params=stock_params)
-response.raise_for_status()
-data = response.json()["Time Series (Daily)"]
+response_stock = requests.get("https://www.alphavantage.co/query", params=stock_params)
+response_stock.raise_for_status()
+data = response_stock.json()["Time Series (Daily)"]
 # print(data)
 data_list = list(data.values())
 open_daily = data_list[0]
 att_open = open_daily["1. open"]
 att_close = open_daily["4. close"]
+difference_1st_day = abs(float(data_list[1]["4. close"]) - float(att_close))
+difference_2nd_day = abs(float(data_list[2]["4. close"]) - float(att_close))
+print(difference_1st_day, difference_2nd_day)
+diff_1_percent = (difference_1st_day / float(att_close)) * 100
+print(diff_1_percent)
+diff_2_percent = (difference_2nd_day / float(att_close)) *100
+print(diff_2_percent)
 
-if (float(data_list[1]["4. close"]) - float(att_close)) % float(att_open) >= 5 and (float(data_list[2]["4. close"]) - float(att_close)) % float(att_close) >= 5:
-    print("Get News")
+news_params = {
+    "apiKey": News_API,
+    "qInTitle": COMPANY_NAME
+}
+response_news = requests.get("https://newsapi.org/v2/everything", params=news_params)
+response_news.raise_for_status()
+data_news = response_news.json()["articles"]
+first_three = data_news[:3]
+print(first_three)
+formatted_message = [f"Headline:{data_news['title']}, \n Brief:{data_news['content']}" for data_news in first_three]
+if diff_1_percent * 10 >= 1 and diff_2_percent *10 >= 1:
+    print(formatted_message)
 else:
     pass
+
+
+# then do your twilio shit
