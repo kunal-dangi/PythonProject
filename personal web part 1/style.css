@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
+
+body{
+    background: black;
+    color: white;
+}
+h1 {
+    height: 500px;
+  font-family: 'Sacramento', cursive;
+  color: #66BFBF; /* Approximate teal color from the image */
+  font-size: 5rem;
+  padding-left: 400px;
+    padding-top: 50px;
+    background-image: url("faded_gallery-OfdOEdGYiuk-unsplash.jpg");
+    background-position: top;
+}
